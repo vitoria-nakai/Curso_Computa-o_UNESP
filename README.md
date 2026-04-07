@@ -1,0 +1,1 @@
+Este repositório contém o conjunto de algoritmos, exercícios e projetos desenvolvidos ao longo da minha trajetória na graduação em Ciência da Computação. O objetivo é documentar minha evolução técnica e organizar o conhecimento adquirido em diferentes disciplinas.
