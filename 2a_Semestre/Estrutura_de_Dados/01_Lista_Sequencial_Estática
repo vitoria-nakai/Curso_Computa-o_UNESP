@@ -80,6 +80,16 @@ void insertPosition(LSE * list, int value, int position){
     }
 }
 
+void delete(LSE * list, int value){
+    int aux = -1;
+    for(int i = 0; i < list->quantidade; i++){
+        if(list->itens[i] == value){
+            
+        }
+    }
+    
+}
+
 int main(){
     LSE l;
     l.quantidade = 0;
@@ -93,7 +103,7 @@ int main(){
             "1 - Acessar as informações básicas da lista atual\n"
             "2 - Acessar a posição de certo valor\n"
             "3 - Inserir elemento em certa posição\n"
-            "4 - Inserir elemento de forma ordenada\n\n"
+            "4 - Remover elemento\n\n"
             "Ação: "
         );
         scanf("%d", &choice);
@@ -121,6 +131,10 @@ int main(){
             printf("Digite a posição que deseja inserir: ");
             scanf("%d", &posicao);
             insertPosition(&l, valor, posicao);
+        }else if(choice == 4){
+            printf("Digite o elemento que deseja remover: ");
+            scanf("%d", &valor);
+            
         }
     }
     return 0;
