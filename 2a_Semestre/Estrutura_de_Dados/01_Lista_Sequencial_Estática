@@ -1,0 +1,105 @@
+/*
+========== LISTA ESTÁTICA SEQUENCIAL ==========
+
+lista Estática Sequencial -> elementos são consecutivos
+Lista Estática Encadeada -> elementos não consecutivos, mas ligados por meio de ponteiros
+
+Vantagens
+- Acesso direto indexado a qualquer elemento da Lista
+- Tempo constante para acessar o elemento i - dependerá somente do índice
+ Desvantagem
+ - Movimentação quando eliminado/inserido elemento
+ - Tamanho máximo pré-estimado
+ 
+ Quando usar:
+ - Listas pequenas
+ - Inserção/remoção no fim da Lista
+ - Tamanho máximo bem definido
+ 
+ OPERAÇÕES
+ - Retornar o tamanho da lista
+ - Retornar a posição de dado elemento
+ - Retornar toda a lista
+ - Verificar se a lista está vazia
+ - Verificar se a lista está cheia
+ - Criar uma lista vazia
+ - Apagar uma lista
+ - Inserir elemento numa certa posição da lista
+ - Inserir elemento de forma ordenada
+*/
+
+#include<stdio.h>
+#include<stdlib.h>
+
+#define MAX 10 // MAX = 10
+
+
+// DEFINIR A ESTRUTURA DA LISTA SEQUENCIAL ESTÁTICA
+typedef struct{
+    int itens[MAX]; //O array com os elementos
+    int quantidade; // quantidade máxima de elementos
+} LSE;
+
+void printList(LSE list){
+    printf("\n ---------- LISTA ----------\n");
+    if(list.quantidade == 0){
+        printf("(sem elementos)\n");
+    }
+    else{
+        for(int i = 0; i < list.quantidade; i++){
+        printf("%d\t", i, list.itens[i]);
+        }
+        printf("\n");
+    }
+}
+
+int searchPosition(LSE list, int value){
+    int i = 0;
+    for(i; i < list.quantidade; i++){
+        if(list.itens[i] == value) break;
+    }
+    return i;
+}
+
+int main(){
+    LSE l;
+    l.quantidade = 0;
+
+    while(1){
+        int choice, valor;
+        printf("\n\n========== LISTA SEQUENCIAL ESTATICA ==========\n\n");
+        printList(l);
+        printf("\n ---------- OPERAÇÕES -----------\n\n"
+            "0 - Desligar o sistema.\n"
+            "1 - Acessar as informações básicas da lista atual\n"
+            "2 - Acessar a posição de certo valor\n"
+            "3 - Inserir elemento em certa posição\n"
+            "4 - Inserir elemento de forma ordenada\n\n"
+            "Ação: "
+        );
+        scanf("%d", &choice);
+        if(choice == 0){
+            printf("Desligando o sistema ... . Obrigada pela atenção.");
+            break;
+        }else if(choice == 1){
+            if(l.quantidade == 0){
+                printf("A lista está vazia.");
+            }
+            else{
+                printf("\n Tamanho da Lista: %d", l.quantidade);
+            }
+        }else if(choice == 2){
+            if(l.quantidade == 0){
+                printf("Náo há elementos na lista. Adicione elementos para procurá-los.");
+            }else{
+                printf("Digite o valor, cuja posição deseja procurar: ");
+                scanf("%d", &valor);
+                printf("Procurando... . O valor está na posição %d", searchPosition(l, valor));
+            }
+        }else if(choice == 3){
+            printf("Digite o valor que deseja adicionar: ");
+            scanf("%d", &valor);
+        }
+    }
+    return 0;
+}
