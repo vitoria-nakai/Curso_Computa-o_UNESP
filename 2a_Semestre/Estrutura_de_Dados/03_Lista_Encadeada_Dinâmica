@@ -1,0 +1,225 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+// ========== ESTRUTURA PADRÃO DE NÓ ==========
+struct node {
+    int info;
+    struct node * prox;
+};
+
+// ========== FUNÇÕES DE GERENCIAMENTO ==========
+//criar uma lista e o primeiro nó vazios
+struct node * criarNode(){
+    struct node * novo = NULL;
+    return novo;   //retorna o endereço da lista
+}
+
+//liberar a memória da lista
+struct node * liberaLista(struct node * lista){   
+    struct node * aux;   //declarando um ponteiro auxiliar
+    while(aux != NULL){   //enquanto o endereço do ponteiro auxiliar não for NULL
+        aux = lista;   //atribui o endereço da lista ao ponteiro auxiliar
+        lista = lista->prox;   //atribui o endereço do próximo elemento ao ponteiro da lista
+        free(aux);   //libera a memória do nó do endereço
+    }
+    return NULL;
+}
+
+// ========== FUNÇÕES DE INSERÇÃO ==========
+//inserir no início da lista
+struct node * inserirInicio(struct node * lista){
+    int dado;
+    printf("Digite o valor que deseja adicionar no início da lista: ");
+    scanf("%d", &dado);
+    struct node * novo = (struct node*)malloc(sizeof(struct node));
+    if(novo != NULL){   //Para caso ocorra erro na reserva de memória em novo;
+        novo->info = dado;
+        novo->prox = lista;
+        lista = novo;
+        printf("Valor adicionado com sucesso!");
+    }
+    else{
+        printf("Erro ao reservar memória para adicionar nó no início da lista.");
+    }
+    return lista;
+}
+
+//inserir no final da lista
+struct node * inserirFinal(struct node * lista){
+    int dado;
+    printf("Digite o valor que deseja inserir no final da lista: ");
+    scanf("%d", &dado);
+    struct node * novo = (struct node*)malloc(sizeof(struct node));   //reservar memória para um nó
+    if(novo == NULL){   //se der erro ao alocar a memória
+        printf("Erro ao reservar memória para adicionar nó no final da lista.");
+        return lista;   //retorna o endereço da lista
+    }
+    novo->info = dado;   //atribui o valor do nó criado
+    novo->prox = NULL;   //indica que o nó criado será o último da lista
+    if(lista == NULL){   //caso a lista esteja vazia
+        return novo;   //o último nó se torna o primeiro
+    }
+    struct node * aux = lista;   //declaração de um ponteiro auxiliar
+    while(aux->prox != NULL){   //percorrendo a lista enquanto o endereço do próximo nó não for igual a NULL
+        aux = aux->prox;   //atribui o endereço do próximo nó ao nó atual no ponteiro auxiliador
+    }
+    aux->prox = novo;   //atribui o endereço do novo último nó ao ponteiro do último nó anterior
+    return lista;   //retorna o endereço da lista 
+}
+
+//inserir na posição desejada
+struct node *inserirPosicao(struct node * lista){
+    int dado, posicao;
+    printf("Digite o valor a ser adicionado: ");
+    scanf("%d", &dado);
+    printf("Digite a posicao na qual o valor será inserido: ");
+    scanf("%d", &posicao);
+    struct node * novo = (struct node*)malloc(sizeof(struct node));
+    if(novo == NULL){   //se der erro ao alocar a memória
+        printf("Erro ao reservar memória para adicionar nó na posição desejada na lista.");
+        return lista;   //retorna o endereço da lista
+    }
+    novo->info = dado;   //atribui o valor do nó criado
+
+    if(lista == NULL || posicao <= 1){
+        novo->prox = lista;
+        return novo;
+    }
+    struct node *atual = lista;
+    for(int i = 0; i <= posicao - 1 && atual->prox != NULL; i++){
+        atual = atual->prox;
+    }
+    novo->prox = atual->prox;
+    atual->prox = novo;
+    return lista;
+}
+// ========== FUNÇÕES DE REMOÇÃO (free) ==========
+//remover do início
+struct node *removerInicio(struct node * lista){
+    if(lista == NULL){
+        printf("Não há o que remover na lista. Interrompendo processo.");
+        return NULL;
+    }
+    struct node * aux = lista;
+    lista = lista->prox;
+    free(aux);
+    return lista;
+}
+
+//remover valor específico
+struct node * removerEspecifico(struct node * lista){
+    int valor;
+    printf("Digite o valor que deseja remover: ");
+    scanf("%d", &valor);
+    struct node * aux = lista;
+    struct node * remove;
+
+    if(lista == NULL){
+        printf("Não há o que remover na lista. Interrompendo processo.");
+        return NULL;
+    }
+    if(lista->info == valor){   //se o valor estiver no primeiro nó
+        remove = lista;
+        lista = lista->prox;
+        free(remove);
+        return lista;
+    }
+    for(int i = 0; aux->prox != NULL && aux->prox->info != valor; i++){   //percorrendo a lista até achar o valor
+        aux = aux->prox;
+    }
+    if(aux->prox != NULL){
+        remove = aux->prox;
+        aux->prox = aux->prox->prox;
+        free(remove);
+        return lista;
+    }
+    return lista;
+}
+
+// ========== FUNÇÕES DE BUSCA E NAVEGAÇÃO ==========
+//buscar valor
+struct node * buscarValor(struct node * lista, int valor){
+    if(lista == NULL){
+        printf("Não há o que procurar na lista. Interrompendo processo.");
+        return NULL;
+    }
+    struct node * aux = lista;
+    while(aux != NULL){
+        if(aux->info == valor) return aux;
+        else aux = aux->prox;
+    }
+    return NULL;
+}
+
+//imprimir os valores da lista
+void imprimir(struct node * lista){
+    struct node * aux = lista;
+    printf("LISTA DE VALORES");
+    if(aux == NULL){
+        printf("\t (sem elementos)\n");
+    }else{
+        while(aux != NULL){
+            printf("\t%d", aux->info);
+            aux = aux->prox;
+        }
+    }
+}
+
+//contar elementos
+int contar(struct node * lista){
+    struct node * aux = lista;
+    int i = 0;
+    while(aux != NULL){
+        i++;
+        aux = aux->prox;
+    }
+    return i;
+}
+
+int main(){
+    struct node * list = NULL;
+    int choice;
+    while(1){
+        printf("\n\n========== LISTA ENCADEADA DINÂMICA ==========\n\n");
+        imprimir(list);
+        printf("\nSua lista tem %d elementos\n", contar(list));
+        printf("Escolha sua ação\n"
+        "1 - Desligar o sistema;\n\n"
+        
+        "FUNÇÕES DE GERENCIAMENTO\n"
+        "2 - Apagar toda a lista;\n\n"
+        
+        "FUNÇÕES DE INSERÇÃO\n"
+        "3 - Inserir elemento no início da lista;\n"
+        "4 - Inserir elemento no final da lista;\n"
+        "5 - Inserir elemento na posição desejada da lista;\n\n"
+        ""
+        "FUNÇÕES DE REMOÇÃO\n"
+        "6 - Remover elemento do início da lista;\n"
+        "7 - Remover elemento da lista pelo valor dele;\n"
+        "Ação: ");
+        scanf("%d", &choice);
+        if(choice == 1){
+            printf("Desligando o sistema ... . Obrigada pela atenção.");
+            break;
+        }else if(choice == 2){
+            list = liberaLista(list);
+            if(list) printf("Lista apagada com sucesso!");
+            else printf("Ocorreu problemas ao apagar a lista.");
+        }else if(choice == 3){
+            list = inserirInicio(list);
+        }else if(choice == 4){
+            list = inserirFinal(list);
+        }else if(choice == 5){
+            list = inserirPosicao(list);
+        }else if(choice == 6){
+            list = removerInicio(list);
+        }else if(choice == 7){
+            list = removerEspecifico(list);
+        }else{
+            printf("Ação não reconhecida. Tente novamente.");
+        }
+        
+    }
+    return 0;
+}
