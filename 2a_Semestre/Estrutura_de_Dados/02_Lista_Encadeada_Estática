@@ -1,0 +1,163 @@
+/*
+========== LISTA ENCADEADA ESTÁTICA ==========
+
+Vantagens
+- Acesso rápido em cache, já que os elementos esão no mesmo bloco de memória
+- Quantidade de memória pré-determinada
+- Não há risco de esquecer de dar free()
+
+Desvantagens
+- Tamanho fixo de memória
+- Gerenciamento manual dos índices
+*/
+
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 10   //Tamanha máximo definido em 10
+
+//ESTRUTURA DE CADA NÓ ESTÁTICA
+
+typedef struct {
+    int item;
+    int prox;   //índice do próximo elemento
+} No;
+
+//ESTRUTURA DA LISTA QUE ORGANIZA OS NÓS
+
+typedef struct {
+    No nos[MAX];   //O espaço de memória fixo
+    int inicio;   //Indice onde começa a lista com dados
+    int disponivel;   //Indice do primeiro espaço vazio para uso
+} LEE;
+
+void setList(LEE * list){
+    //Configurar para que cada prox aponte para o próximo índice
+    for(int i = 0; i < MAX - 1; i++){
+        list->nos[i].prox = i + 1;
+    }
+    //O último nó aponta para o vazio;
+    list->nos[MAX-1].prox = -1;
+    
+    //A lista de dados começa vazia
+    list->inicio = -1;
+    
+    //O primeiro espaço livre é o índice 0
+    list->disponivel = 0;
+}
+
+void printList(LEE * list){
+    printf("\n---------- LISTA ----------\n");
+    int index = list->inicio;
+    
+    if(index == -1){
+        printf("\n(lista vazia)\n");
+    }else{
+        while(index != -1){
+            printf("%d\t", list->nos[index].item);
+            index = list->nos[index].prox;
+        }
+    }
+}
+
+int getNode(LEE * list){
+    if(list->disponivel == -1){
+        return -1;
+    }else{
+        int newIndex = list->disponivel;
+        list->disponivel = list->nos[newIndex].prox;
+        return newIndex;
+    }
+}
+
+void insertSort(LEE * list, int value){
+    int newIndex = getNode(list);
+    if(newIndex == -1){
+        printf("A lista já está cheia. Tente novamente.");
+        return;
+    }else{
+        list->nos[newIndex].item = value;
+        
+        int anterior = -1; 
+        int atual = list->inicio;
+        while(atual != -1 && list->nos[atual].item < value){
+            anterior = atual;
+            atual = list->nos[atual].prox;
+        }
+        list->nos[newIndex].prox = atual;
+        
+        if(anterior == -1){
+            list->inicio = newIndex;
+        }else{
+            list->nos[anterior].prox = newIndex;
+        }
+    }
+}
+
+void freeNode(LEE * list, int index){
+    list->nos[index].prox = list->disponivel;
+    list->disponivel = index;
+}
+
+void deleteNode(LEE * list, int value){
+    int anterior = -1, atual = list->inicio;
+    if(atual == -1){
+        printf("A lista já está vazia. Tente novamente.");
+        return;
+    }else{
+        while(atual != -1){
+            if(list->nos[atual].item == value){
+                break;
+            }
+            anterior = atual;
+            atual = list->nos[atual].prox;
+        }
+        
+        if(atual == -1){
+            printf("O elemento não foi encontrado para ser deletado. Tente novamente.");
+            return;
+        }
+        if(anterior == -1){
+            list->inicio = list->nos[atual].prox;
+        }else{
+            list->nos[anterior].prox = list->nos[atual].prox;
+        }
+        freeNode(list, atual);
+        
+    }
+}
+
+int main(){
+    int acao, valor, posicao;
+    
+    //Declarando a minha LEE
+    LEE minhaLista;
+    
+    //Inicializando a minha LEE
+    setList(&minhaLista);
+    
+    while(1){
+        printf("\n\n========== LISTA ENCADEADA ESTÁTICA ==========\n\n");
+        printList(&minhaLista);
+        printf("\n---------- OPERAÇÕES ----------\n"
+            "0 - Desligar o sistema\n"
+            "1 - Adicionar elemento de forma ordenada\n"
+            "2 - Remover elemento da lista\n\n"
+            "Ação: ");
+        scanf("%d", &acao);
+        
+        if(acao == 0){
+            printf("Desligando o sistema ... . Obrigada pela atenção.");
+            break;
+            
+        }else if(acao == 1){
+            printf("Digite o valor que deseja adicionar: ");
+            scanf("%d", &valor);
+            insertSort(&minhaLista, valor);
+        }else if(acao == 2){
+            printf("Digite o valor que deseja remover: ");
+            scanf("%d", &valor);
+            deleteNode(&minhaLista, valor);
+        }
+    }
+    return 0;
+}
