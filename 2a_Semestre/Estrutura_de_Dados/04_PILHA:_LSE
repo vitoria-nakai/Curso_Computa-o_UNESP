@@ -1,0 +1,59 @@
+/*========== PILHA DE LISTA SEQUENCIAL ESTÁTICA ========== */
+
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 10
+
+typedef struct{
+    int itens[MAX];
+    int quantidade;
+}LSE;
+
+void print(LSE list){
+    if(list.quantidade == 0){
+        printf("\n(lista vazia)\n");
+    }else{
+        for(int i = 0; i < list.quantidade; i++){
+            printf("%d\t", list.itens[i]);    
+        }
+        printf("\n");
+    }
+}
+
+void add(LSE * list, int value){
+    list->itens[list->quantidade] = value;
+    list->quantidade++;
+}
+
+void deleteLast(LSE * list){
+    list->quantidade--;
+}
+
+int main(){
+    LSE lista;
+    lista.quantidade = 0;
+    int acao, valor;
+    while(1){
+        printf("\n\n========== PILHA DE LISTA SEQUENCIAL ESTÁTICA ==========\n\n");
+        print(lista);
+        printf("\n---------- OPERAÇÕES ----------\n"
+            "0 - Desligar o sistema;\n"
+            "1 - Adicionar elementos;\n"
+            "2 - Retirar elementos;\n\n"
+            "Ação: ");
+        scanf("%d", &acao);
+        if(acao == 0){
+            printf("Desligando o sistema ... . Obrigada pela atenção.");
+            break;
+        }else if(acao == 1){
+            printf("Digite o valor que deseja adicionar: ");
+            scanf("%d", &valor);
+            add(&lista, valor);
+        }else if(acao == 2){
+            deleteLast(&lista);
+        }else{
+            printf("Ação não reconhecida. Tente novamente.");
+        }
+    }
+    return 0;
+}
