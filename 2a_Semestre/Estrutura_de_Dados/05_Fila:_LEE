@@ -1,0 +1,105 @@
+/*========== FILA ENCADEADA ESTÁTICA ==========*/
+
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 10
+
+typedef struct{
+    int item;
+    int prox;
+} No;
+
+typedef struct{
+    No nos[MAX];
+    int inicio;
+    int disponivel;
+} FEE;
+
+void setList(FEE * list){
+    for(int i = 0; i < MAX - 1; i++){
+        list->nos[i].prox = i + 1;
+    }
+    list->disponivel = 0;
+    list->inicio = -1;
+    list->nos[MAX - 1].prox = -1;
+}
+
+void print(FEE * list){
+    if(list->inicio == -1){
+        printf("\n(fila vazia)\n");
+    }else{
+        for(int i = list->inicio; i != -1; i = list->nos[i].prox){
+            printf("%d\t", list->nos[i].item);
+        }
+        printf("\n");
+    }
+}
+
+int getNode(FEE * list){
+    if(list->disponivel == -1){
+        return -1;
+    }else{
+        int index = list->disponivel;
+        list->disponivel = list->nos[index].prox;
+        return index;
+    }
+}
+
+void add(FEE * list, int value){
+    int index = getNode(list);
+    if(index == -1){
+        printf("A fila está cheia. Tente novamente.");
+    }else{
+        list->nos[index].item = value;
+        if(list->inicio == -1){
+            list->inicio = index;
+            list->nos[index].prox = -1;
+        }else{
+            int i;
+            for(i = list->inicio; list->nos[i].prox != -1; i = list->nos[i].prox);
+            list->nos[i].prox = index;
+            list->nos[index].prox = -1;
+        }
+    }
+}
+
+void delete(FEE * list){
+    if(list->inicio == -1){
+        printf("A fila já está vazia. Tente novamente.");
+    }else{
+        int aux = list->inicio;
+        list->inicio = list->nos[aux].prox;
+        list->nos[aux].prox = list->disponivel;
+        list->disponivel = aux;
+    }    
+}
+
+int main(){
+    FEE minhaLista;
+    setList(&minhaLista);
+    int valor, acao;
+    while(1){
+        printf("\n\n========== FILA ENCADEADA ESTÁTICA ==========\n\n");
+        print(&minhaLista);
+        printf("\n---------- OPERAÇÕES ----------\n"
+            "0 - Desligar o sistema;\n"
+            "1 - Adicionar elementos;\n"
+            "2 - Retirar elementos;\n\n"
+            "Ação: ");
+        scanf("%d", &acao);
+        if(acao == 0){
+            printf("Desligando o sistema... . Obrigada pela atenção.");
+            break;
+        }else if(acao == 1){
+            printf("Digite o valor que deseja adicionar: ");
+            scanf("%d", &valor);
+            add(&minhaLista, valor);
+        }else if(acao == 2){
+            delete(&minhaLista);
+        }else{
+            printf("Ação não reconhecida. Tente novamente.");
+        }
+        
+    }
+    return 0;
+}
