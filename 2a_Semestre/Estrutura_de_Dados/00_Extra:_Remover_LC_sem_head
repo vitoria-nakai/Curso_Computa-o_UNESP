@@ -1,0 +1,83 @@
+//FUNÇÃO PARA REMOVER ITEM DE LISTA CIRCULAR A PARTIR DO SEU CAMPO INFO (SEM HEAD):
+
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 5
+
+typedef struct LED{
+    int info;
+    struct LED * prox;
+} LED;
+
+LED * startAll(LED * list){
+    //Primeiro nó
+    LED * first = (LED*)malloc(sizeof(LED));
+    first->info = 1;
+    first->prox = NULL;
+    list = first;
+    
+    //Restante
+    LED * aux = list;
+    for(int i = 2; i < MAX + 1; i++){
+        LED * new = (LED*)malloc(sizeof(LED));
+        new->info = i;
+        new->prox = NULL;
+        aux->prox = new;
+        aux = aux->prox;
+    }
+    aux->prox = first;
+    return first;
+}
+
+void show(LED * list){
+    printf("\n---------- LISTA ----------\n");
+    if(list == NULL){
+        printf("\n(lista vazia)\n");
+    }else{
+        LED * aux = list;
+        for(int i = 0; i < 2 * MAX; i++){
+            printf("%d\t", aux->info);
+            aux = aux->prox;
+            if(aux == NULL) break;
+        }
+        printf("\n");
+    }
+}
+
+LED * pop(LED * list, int value){
+    if(list == NULL){
+        printf("\nA lista já está vazia. Tente novamente.\n");
+    }else{
+        LED * aux = list;
+        LED * ant = NULL;
+        while(aux->info != value && aux->prox != list){
+            ant = aux;
+            aux = aux->prox;
+        }
+        ant = aux;
+        aux = aux->prox;
+        if(aux->info != value){
+            printf("Erro.");
+        }else{
+            ant->prox = aux->prox;
+            free(aux);
+        }
+    }
+    return list;
+}
+
+int main(){
+    LED * LC = NULL;
+    LC = startAll(LC);
+    int valor;
+    
+    while(1){
+        printf("\n\n========== LISTA CIRCULAR ==========\n\n");
+        show(LC);
+        printf("Digite o valor que deseja retirar: ");
+        scanf("%d", &valor);
+        LC = pop(LC, valor);
+        
+    }
+    return 0;
+}
