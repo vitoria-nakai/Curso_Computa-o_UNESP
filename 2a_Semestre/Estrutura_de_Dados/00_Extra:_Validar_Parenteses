@@ -1,0 +1,91 @@
+//FUNÇÃO PARA VALIDAR PARENTESIS DE EXPRESSÃO ALGEBRICA (SEM PARAMETROS E USANDO CARACTERES):
+//Lógica de LIFO
+
+#include<stdio.h>
+#include<stdlib.h>
+
+typedef struct LED{
+    char para;
+    struct LED * prox;
+} LED;
+
+LED * add(LED * list, char para){
+    LED * new = (LED*)malloc(sizeof(LED));
+    if(new == NULL){
+        printf("\nERRO: Memória insuficiente!\n");
+        return list;
+    }else{ 
+        new->para = para;
+        new->prox = NULL;
+        if(list == NULL){
+            return new;
+        }else{
+            LED * aux = list;
+            while(aux->prox != NULL){
+                aux = aux->prox;
+            }
+            aux->prox = new;
+            return list;
+        }
+    }
+}
+
+char pop(LED ** list){
+    if((*list) == NULL){
+        printf("A fila já está vazia.");
+        return '\0';
+    }else{
+        LED * aux = (*list);
+        LED * ant = NULL;
+        char para;
+        while(aux->prox != NULL){
+            ant = aux;
+            aux = aux->prox;
+        }
+        para = aux->para;
+        if(aux == *list){
+            *list = NULL;
+            free(aux);
+        }else{
+            ant->prox = aux->prox;
+            free(aux);
+        }
+        return para;
+    }
+}
+
+int verify(char string[]){
+    LED * ver = NULL;
+    for(int i = 0; string[i] != '\0'; i++){
+        if(string[i] == '('){
+            ver = add(ver, '(');
+        }else if(string[i] == '{'){
+            ver = add(ver, '{');
+        }else if(string[i] == '['){
+            ver = add(ver, '[');
+        }else if(string[i] == ')'){
+            if('(' != pop(&ver)) return 0;
+        }else if(string[i] == '}'){
+            if('{' != pop(&ver)) return 0;
+        }else if(string[i] == ']'){
+            if('[' != pop(&ver)) return 0;
+        }
+    }
+    if(ver == NULL) return 1;
+    if(ver != NULL) return 0;
+}
+
+int main(){
+    char comando[100];
+    while(1){
+        printf("\n\n========== VERIFICAÇÃO DE PARÊNTESES ==========\n\n"
+            "Digite sua linha de comando: ");
+        scanf("%s", comando);
+        if(verify(comando) == 1){
+            printf("Está bem formatado.");
+            break;
+        }
+        if(verify(comando) == 0) printf("Está mal formatado. Ajuste.");
+    }
+    return 0;
+}
