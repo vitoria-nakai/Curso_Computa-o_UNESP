@@ -1,0 +1,29 @@
+/*
+ÁRVORE 
+
+OPERAÇÕES BÁSICAS
+- Construção
+- Inserção
+- Eliminação
+- Pesquisa
+- Percurso
+
+3 forma de se percorrer:
+- Pré-ordem: visitar o nó raiz > percorrer em pré-ordem a subárvore esquerda > percorrer em pré-ordem a subárvore direita;
+- In-ordem (simétrica): percorrer em pré-ordem a subárvore esquerda > visitar o nó raiz > percorrer em pré-ordem a subárvore direita;
+- Pós-ordem: percorrer em pré-ordem a subárvore esquerda > percorrer em pré-ordem a subárvore direita > visitar o nó raiz;
+
+*/
+
+typedef struct No {
+    int valor;
+    struct No * esquerda;
+    struct No * direita;
+} No;
+
+//Função de percorrer em pré-ordem
+void preordem(struct no * p){
+    if(!p) return;
+    preordem(p->esquerda);
+    preordem(p->direita);
+}
