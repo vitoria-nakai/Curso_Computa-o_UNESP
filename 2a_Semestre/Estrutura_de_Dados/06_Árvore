@@ -24,6 +24,21 @@ typedef struct No {
 //Função de percorrer em pré-ordem
 void preordem(struct no * p){
     if(!p) return;
+    printf(p->valor);
     preordem(p->esquerda);
     preordem(p->direita);
+}
+//Função de percorrer em in-ordem
+void preordem(struct no * p){
+    if(!p) return;
+    preordem(p->esquerda);
+    printf(p->valor);
+    preordem(p->direita);
+}
+//Função de percorrer em in-ordem
+void preordem(struct no * p){
+    if(!p) return;
+    preordem(p->esquerda);
+    preordem(p->direita);
+    printf(p->valor);
 }
