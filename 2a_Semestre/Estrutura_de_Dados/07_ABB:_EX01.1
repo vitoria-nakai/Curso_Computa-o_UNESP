@@ -1,0 +1,83 @@
+/*
+1- Utilizando árvores binárias de busca (ABB), implemente em C um programa que 
+possua as seguintes funções: 
+a) Constrói uma ABB guardando em cada nó um valor do tipo inteiro. Os dados 
+devem ser lidos (mínimo de 8 nós). (FUNÇÃO INSERT)
+b) Calcula a soma dos conteúdos de todos os nós de uma árvore (não é para somar 
+na inserção!). 
+c) Imprime a árvore na tela. (FUNÇÃO PRINT)
+d) Remove a árvore da memória, ou seja, libera o espaço ocupado em memória por 
+cada nó da árvore. 
+A função main deverá chamar adequadamente cada uma das funções. 
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node{
+    int info;
+    struct Node * esq;
+    struct Node * dir;
+} Node;
+
+Node * createNode(int valor){
+    Node * new = (Node*)malloc(sizeof(Node));
+    new->info = valor;
+    new->esq = NULL;
+    new->dir = NULL;
+    return new;
+}
+
+void insert(Node ** raiz, int valor){
+    Node * aux = *raiz;
+    if(!aux){
+        aux = createNode(valor);
+    }else if(valor > aux->info){
+        if(aux->dir == NULL){
+            aux->dir = createNode(valor);
+        }else{
+            aux = aux->dir;
+            insert(&aux, valor);
+        }
+    }else{
+        if(aux->esq == NULL){
+            aux->esq = createNode(valor);
+        }else{
+            aux = aux->esq;
+            insert(&aux, valor);
+        }
+    }
+}
+
+void printPreOrdem(Node * raiz){
+    if(!raiz){
+        printf("\n(sem dados)\n");
+        return;
+    };
+    printf("%d", raiz->info);
+    printPreOrdem(raiz->esq);
+    printPreOrdem(raiz->dir);
+}
+
+int main(){
+    Node * raiz = NULL;
+    int choice, valor;
+    while(1){
+        printf("\n\n========== EXERCÍCIO 1.1 ==========\n\n",
+               "Função print: ");
+        printPreOrdem(raiz);
+        printf("Selecione a operação desejada:",
+               "0 - Desligar o sistema;",
+               "1 - Inserir elemento;",
+               "Ação: ");
+        scanf("%d", &choice);
+        if(choice == 0){
+            printf("Desligando o sistema. Obrigada pela atenção.");
+            break;
+        }else if(choice == 1){
+            printf("Digite o valor a ser adicionado: ");
+            scanf("%d", &valor);
+            insert(&raiz, valor);
+        }
+    }
+}
