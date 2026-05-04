@@ -36,6 +36,27 @@ adiciona-se o próximo dado na subárvores esquerda, se houver nó, o nó em
 questão se torna objeto de comparação.
 */
 
+void inserir(struct No raiz, int valor){
+    struct No * aux = *raiz;
+    if(aux == NULL){
+        aux->info = valor;
+    }else if(valor > aux->info){
+        if(aux->direita == NULL){
+            aux->direita = criarNo(valor);
+        }else{
+            aux = aux->direita;
+            inserir(&aux, valor);
+        }
+    }else{
+        if(aux->esquerda == NULL){
+            aux->esquerda = criarNo(valor);
+        }else{
+            aux = aux->esquerda;
+            inserir(&aux, valor);
+        }
+    }
+}
+
 /* FUNÇÃO DE BUSCA
 Lógica:
 1 - Compare o valor de busca com a raiz: se for igual, encontramos o nó.
