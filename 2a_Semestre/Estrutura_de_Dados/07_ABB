@@ -1,0 +1,60 @@
+/* 
+========== ÁRVORE BINÁRIA DE BUSCA ==========
+
+Apenas 2 ramificações para cada nó:
+
+- Subárvore Esquerda: Contém apenas elementos menores que o nó pai.
+- Subárvore Direita: Contém apenas elementos maiores que o nó pai.
+
+EFICIÊNCIA
+
+Pior caso: árvore degenerada ou "em linha".
+- Quando inserimos dados já ordenados
+Complexidade de inserção: O(n^2).
+Complexidade de busca: O(n).
+
+Melhor caso: árvore completa e balanceada.
+- Quando os dados ficam bem distribuidos, com a menor altura possível.
+Complexidade de busca: O(log n).
+
+Como obter o melhor caso de uma lista de dados?
+1. Começamos com a lista de chaves em ordem crescente.
+2. Identificamos o elemento do índice médio e o inserimos na árvore.
+3. Repetimos o processo para a metade esquerda e para a metade direita da lista.
+
+*/
+
+/* FUNÇÃO DE INSERÇÃO E CONSTRUÇÃO
+Entrada de dados: 14, 15, 4, 9, 7.
+
+Lógica: 
+1 - O primeiro dado é a raiz.
+2 - O próximo dado é comparado com a raiz. Se for maior e não houver nó,
+adiciona-se o próximo dado na subárvore direita, se houver nó, o nó em 
+questão se torna objeto de análise. Se for menor e não houver nó,
+adiciona-se o próximo dado na subárvores esquerda, se houver nó, o nó em
+questão se torna objeto de comparação.
+*/
+
+/* FUNÇÃO DE BUSCA
+Lógica:
+1 - Compare o valor de busca com a raiz: se for igual, encontramos o nó.
+2 - Se for menor: vamos para a subárvore esquerda.
+3 - Se for maior: vamos para a subárvore direita.
+4. Repetimos: aplicamos esse método recursivamente até encontrar o valor
+ou chegar a um nó vazio.
+*/
+
+/* FUNÇÃO DE REMOÇÃO
+
+Caso A: o nó a ser removido é uma folha.
+Lógica: ajustar o ponteiro do pai para NULL e remover a folha.
+
+Caso B: o nó possui um único filho.
+Lógica: o ponteiro do pai aponta para o neto e o nó é removido.
+
+Caso C: o nó possui dois filhos.
+Lógica: substitui o nó em questão pela menor elemento da subárvore direita
+ou o maior elemento da subárvore esquerda. Em seguida, usa-se o caso A ou B
+para remover o nó sem valor.
+*/
