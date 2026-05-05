@@ -35,15 +35,13 @@ Node * insert(Node * raiz, int valor){
         if(raiz->dir == NULL){
             raiz->dir = createNode(valor);
         }else{
-            raiz = raiz->dir;
-            insert(raiz, valor);
+            raiz->dir = insert(raiz->dir, valor);
         }
     }else{
         if(raiz->esq == NULL){
             raiz->esq = createNode(valor);
         }else{
-            raiz = raiz->esq;
-            insert(raiz, valor);
+            raiz->esq = insert(raiz->esq, valor);
         }
     }
     return raiz;
