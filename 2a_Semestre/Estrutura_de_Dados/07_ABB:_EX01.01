@@ -51,11 +51,10 @@ Node * insert(Node * raiz, int valor){
 
 void printPreOrdem(Node * raiz){
     if(raiz == NULL){
-        printf("NULL\t");
         return;
     }
     else{
-        printf("%d", raiz->info);
+        printf("%d\t", raiz->info);
         printPreOrdem(raiz->esq);
         printPreOrdem(raiz->dir);
     }
