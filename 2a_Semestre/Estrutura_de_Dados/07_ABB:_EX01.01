@@ -28,35 +28,38 @@ Node * createNode(int valor){
     return new;
 }
 
-void insert(Node ** raiz, int valor){
-    Node * aux = *raiz;
-    if(!aux){
-        aux = createNode(valor);
-    }else if(valor > aux->info){
-        if(aux->dir == NULL){
-            aux->dir = createNode(valor);
+Node * insert(Node * raiz, int valor){
+    if(raiz == NULL){
+        raiz = createNode(valor);
+    }else if(valor > raiz->info){
+        if(raiz->dir == NULL){
+            raiz->dir = createNode(valor);
         }else{
-            aux = aux->dir;
-            insert(&aux, valor);
+            raiz = raiz->dir;
+            insert(raiz, valor);
         }
     }else{
-        if(aux->esq == NULL){
-            aux->esq = createNode(valor);
+        if(raiz->esq == NULL){
+            raiz->esq = createNode(valor);
         }else{
-            aux = aux->esq;
-            insert(&aux, valor);
+            raiz = raiz->esq;
+            insert(raiz, valor);
         }
     }
+    return raiz;
 }
 
 void printPreOrdem(Node * raiz){
-    if(!raiz){
-        printf("\n(sem dados)\n");
+    if(raiz == NULL){
+        printf("NULL\t");
         return;
-    };
-    printf("%d", raiz->info);
-    printPreOrdem(raiz->esq);
-    printPreOrdem(raiz->dir);
+    }
+    else{
+        printf("%d", raiz->info);
+        printPreOrdem(raiz->esq);
+        printPreOrdem(raiz->dir);
+    }
+    printf("\n");
 }
 
 int main(){
@@ -64,9 +67,9 @@ int main(){
     int choice, valor;
     while(1){
         printf("\n\n========== EXERCÍCIO 1.1 ==========\n\n",
-               "Função print: ");
+               "Função print:\n");
         printPreOrdem(raiz);
-        printf("Selecione a operação desejada:",
+        printf("\nSelecione a operação desejada:",
                "0 - Desligar o sistema;",
                "1 - Inserir elemento;",
                "Ação: ");
@@ -77,7 +80,7 @@ int main(){
         }else if(choice == 1){
             printf("Digite o valor a ser adicionado: ");
             scanf("%d", &valor);
-            insert(&raiz, valor);
+            raiz = insert(raiz, valor);
         }
     }
 }
